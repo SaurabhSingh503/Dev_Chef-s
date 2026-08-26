@@ -1,0 +1,149 @@
+/* ============================================================================
+   MANAK — motion
+   ----------------------------------------------------------------------------
+   Animation here exists to communicate state (loading, arrival, AI thinking) or
+   to add restrained depth to the hero compositions. Nothing bounces, nothing
+   spins gratuitously, and everything yields to `prefers-reduced-motion`.
+   Keyframes shared with Tailwind live in `tailwind.config.ts`; this file holds
+   the composed, reusable treatments.
+   ========================================================================== */
+
+/* Staggered arrival for grids and card rows. Apply `.stagger` to the container
+   and each child animates in sequence rather than all at once. */
+.stagger > * {
+  animation: manak-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.04s; }
+.stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger > *:nth-child(4) { animation-delay: 0.16s; }
+.stagger > *:nth-child(5) { animation-delay: 0.2s; }
+.stagger > *:nth-child(6) { animation-delay: 0.24s; }
+.stagger > *:nth-child(7) { animation-delay: 0.28s; }
+.stagger > *:nth-child(8) { animation-delay: 0.32s; }
+
+@keyframes manak-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card hover: a small, confident lift. Used by feature and handbook cards. */
+.hover-lift {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s ease;
+  will-change: transform;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Skeleton shimmer. The moving band is a child pseudo-element so the base
+   colour stays a theme token. */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.28),
+    transparent
+  );
+  animation: manak-shimmer 1.6s infinite;
+}
+@keyframes manak-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* AI processing: three dots breathing out of phase. Communicates "reasoning
+   over retrieved sources", not "page is stuck". */
+.ai-thinking span {
+  animation: manak-ai-pulse 1.4s ease-in-out infinite;
+}
+.ai-thinking span:nth-child(2) { animation-delay: 0.18s; }
+.ai-thinking span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes manak-ai-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Ambient drift for the hero portal and login blob shapes — slow enough to
+   read as depth rather than motion. */
+.drift-slow {
+  animation: manak-drift 26s ease-in-out infinite;
+}
+.drift-slower {
+  animation: manak-drift 38s ease-in-out infinite reverse;
+}
+@keyframes manak-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(1.5%, -2%, 0) scale(1.05);
+  }
+}
+
+/* Underline that draws in on hover/focus — used for quiet text links. */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion: hold every treatment at its resting state. Content must
+   still be fully visible — never leave an element stuck at opacity 0.
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .stagger > *,
+  .shimmer::after,
+  .ai-thinking span,
+  .drift-slow,
+  .drift-slower {
+    animation: none !important;
+  }
+  .stagger > * {
+    opacity: 1;
+    transform: none;
+  }
+  .hover-lift {
+    transition: none;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
+  .link-underline {
+    transition: none;
+  }
+}

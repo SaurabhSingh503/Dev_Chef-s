@@ -1,0 +1,14 @@
+{
+  "//": "Node-side tooling config. Kept standalone (no project references) so a `tsc --noEmit` on the app config cannot fail on composite/emit interactions.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["vite.config.ts", "tailwind.config.ts", "postcss.config.js"]
+}
