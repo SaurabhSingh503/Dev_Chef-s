@@ -1,0 +1,2 @@
+import { Router } from 'express'; import { env } from '../config/env.js'; import { ragClient } from '../services/ragService.js'; import { ok } from '../utils/response.js';
+export const healthRoutes=Router();healthRoutes.get('/',async(_req,res)=>ok(res,{status:'ok',environment:env.NODE_ENV,dependencies:{rag:await ragClient.health(),database:env.DATABASE_URL?'configured':'not_configured',voice:env.VOICE_SERVICE_URL?'configured':'not_configured'}}));

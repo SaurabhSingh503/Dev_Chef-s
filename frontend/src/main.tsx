@@ -1,0 +1,2 @@
+import { StrictMode } from 'react'; import { createRoot } from 'react-dom/client'; import { AppProvider } from './context/AppContext'; import { LanguageProvider } from './i18n/LanguageContext'; import { AppRoutes } from './routes/AppRoutes'; import './styles/main.css';
+createRoot(document.getElementById('root')!).render(<StrictMode><LanguageProvider><AppProvider><AppRoutes/></AppProvider></LanguageProvider></StrictMode>);

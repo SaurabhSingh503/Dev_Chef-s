@@ -1,0 +1,89 @@
+
+/* Language Selector */
+.language-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.language-selector button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color 0.2s;
+  font-family: inherit;
+}
+.language-selector button:hover {
+  color: var(--ink);
+}
+.language-selector button.active {
+  color: var(--green);
+  font-weight: 600;
+}
+.language-selector .divider {
+  color: var(--line);
+}
+
+/* Testing Laboratory Results Layout */
+.lab-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Mobile defaults: normal stacking */
+.lab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.map {
+  min-height: 400px;
+  border-radius: 8px;
+}
+
+/* Desktop override: Two columns, left scrolls independently, right is sticky */
+@media (min-width: 768px) {
+  .lab-layout {
+    grid-template-columns: 1fr 1fr;
+    align-items: start; /* prevents columns from stretching to equal height if we want independent scroll */
+  }
+
+  .lab-list {
+    max-height: 70vh; /* reasonable fixed/max height */
+    overflow-y: auto;
+    padding-right: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  
+  .lab-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .lab-list::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 4px;
+  }
+  
+  .map {
+    position: sticky;
+    top: 2rem;
+    height: 70vh; /* Match the max-height of the list for visual balance */
+  }
+}
+
+.lab.selected {
+  border-color: var(--primary);
+  background-color: rgba(0, 166, 81, 0.05);
+}
+
+.language-selector button:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
